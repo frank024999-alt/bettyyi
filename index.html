@@ -1,0 +1,654 @@
+<!DOCTYPE html><html><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;"><meta http-equiv="x-dns-prefetch-control" content="off"><script src="https://puc.poecdn.net/authenticated_preview_page/standard.3ef2c256959faf5a756d.js"></script>
+    <meta charset="utf-8">
+    <title>Poe</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://puc.poecdn.net/authenticated_preview_page/disableWebRTC.9710cebe07429a9e8e06.js"></script><meta name="x-poe-allow-downloads" content="true"><meta name="x-poe-datastore-behavior" content="disabled"><script src="https://puc.poecdn.net/authenticated_preview_page/tw.50ec1b0612bf5b0c30a5.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/deps.faccd16000d314dc16d5.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/exports.b0f0f482cdeb5302b0b9.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/renderer.75c73ae6b4235f62945a.js"></script><script>Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }var _react = require('react'); var _react2 = _interopRequireDefault(_react);
+var _framermotion = require('framer-motion');
+
+
+
+var _lucidereact = require('lucide-react');
+
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+
+const NAV_ITEMS = [
+  { id: 'home',     label: 'Home',     labelZh: '首页',      icon: _lucidereact.Home },
+  { id: 'chapters', label: 'Chapters', labelZh: '展览路线',  icon: _lucidereact.BookOpen },
+  { id: 'timeline', label: 'Timeline', labelZh: '时间线',    icon: _lucidereact.Clock },
+  { id: 'objects',  label: 'Objects',  labelZh: '展项目录',  icon: _lucidereact.LayoutGrid },
+  { id: 'about',    label: 'About',    labelZh: '方法与说明', icon: _lucidereact.Info },
+  { id: 'credits',  label: 'Credits',  labelZh: '版权与致谢', icon: _lucidereact.Award },
+];
+
+const CATS = {
+  'Entering':           { bg:'bg-amber-100',  text:'text-amber-800',  border:'border-amber-300',  dot:'bg-amber-400',  accent:'border-l-amber-400',  hbg:'bg-amber-50' },
+  'Passing In':         { bg:'bg-slate-100',  text:'text-slate-700',  border:'border-slate-300',  dot:'bg-slate-500',  accent:'border-l-slate-400',  hbg:'bg-slate-50' },
+  'Exiting / Resisting':{ bg:'bg-rose-100',   text:'text-rose-800',   border:'border-rose-300',   dot:'bg-rose-400',   accent:'border-l-rose-400',   hbg:'bg-rose-50'  },
+  'Epilogue':           { bg:'bg-violet-100', text:'text-violet-800', border:'border-violet-300', dot:'bg-violet-400', accent:'border-l-violet-400', hbg:'bg-violet-50' },
+};
+
+const POSTS = [
+  {
+    id:1, category:'Entering', date:'1869', highlight:false, nextId:2,
+    title:"1869 | Ladies' Lectures",
+    subtitle:'被允许进入，但仍在门外',
+    tags:["Ladies' lectures","access"],
+    repository:'UCL Digital Collections / UCL Calendars / Council Minutes',
+    refSource:'[补填 Ref No.]', creditLine:'[补填 Credit Line]',
+    evidenceNote:"插入：Ladies' lectures / ladies' educational association 相关截图/页",
+    exhibitionText:`1869 年"女士讲座"并非平等的起点，而是一种"许可式进入"：女性被允许接触知识，但以被规定的形式、在被限定的范围内。它把女性定位为可被教育的对象，却未赋予她们同等的学术身份。作为展品阅读，这一节点提醒我们：边界最初并非写在围墙上，而写在"允许谁以什么身份进入"的制度语言里——进入本身就是一种权力安排。`,
+    tasks:[
+      {label:'Look',    text:'从证据页中找出"允许/限制"的措辞（例如 ladies / lectures / permitted 等）。'},
+      {label:'Respond', text:'你觉得这是"开放"还是"隔离的另一种方式"？一句话说明。'},
+    ],
+    altText:'19世纪有关女士讲座/女士教育活动的制度性记录截图，用于呈现女性如何以"被允许"的方式进入知识体系。',
+  },
+  {
+    id:2, category:'Entering', date:'1871', highlight:false, nextId:3,
+    title:'1871 | Mixed Classes',
+    subtitle:'同处一室，不等于权力共享',
+    tags:['mixed classes','learning environment'],
+    repository:'UCL Digital Collections / Council Minutes / UCL Calendars',
+    refSource:'[补填 Ref No.]', creditLine:'[补填 Credit Line]',
+    evidenceNote:'插入：mixed classes 1871 或相关描述的截图/页',
+    exhibitionText:`混合课堂常被视为边界消失的象征，但"共处"并不自动带来平等。谁可以发言、谁被认为"属于课堂"、谁承受更多凝视与规训，都可能在空间内部重新分配。本展项把课堂当作一种学习环境（learning environment）：空间组织与社会规范共同塑造学习经验。观众被邀请从证据出发判断：同一教室里是否存在不同规则？`,
+    tasks:[
+      {label:'Look',      text:'在证据中找"混合/共学"的描述，并写下你认为最关键的一句话。'},
+      {label:'Interpret', text:'如果规则没有写明，权力可能藏在哪里？（座位/发言/社交等）'},
+    ],
+    altText:'关于混合课堂/共学的制度性记录截图，用于讨论空间共享与权力共享之间的差异。',
+  },
+  {
+    id:3, category:'Passing In', date:'1878', highlight:false, nextId:4,
+    title:'1878 | Degree Access',
+    subtitle:'制度承认的瞬间，也是新的筛选',
+    tags:['degree access','governance'],
+    repository:'UCL Digital Collections / UCL Calendars',
+    refSource:'[补填 Ref No.]', creditLine:'[补填 Credit Line]',
+    evidenceNote:'插入：1878 admission of women as degree students 的截图/页',
+    exhibitionText:`1878 年女性成为学位学生是重要转折，但制度承认同时引入新的筛选：资格、标准、合规往往以中立语言出现，却可能差别化地约束女性。The World of UCL 指出女性并非在与男性完全相同的条件下被接纳，而后续的 passing-in rule 更把差别化治理写入制度。本展项因此不是庆祝"终于开放"，而是追问：当边界从门口转移到资格体系，它如何变得更隐形、更难挑战？`,
+    tasks:[
+      {label:'Look',    text:'找出证据里关于 admission / conditions / footing 的关键词。'},
+      {label:'Respond', text:'制度的"承认"解决了什么问题？又制造了什么新问题？'},
+    ],
+    altText:'关于女性学位资格开放的制度性记录截图，用于呈现"承认"与"筛选"并存的逻辑。',
+  },
+  {
+    id:4, category:'Passing In', date:'1883–1919', highlight:true, nextId:5,
+    title:'1883–1919 | Passing-in Rule',
+    subtitle:'体面与可信作为入学门禁',
+    tags:['Passing-in rule','Rosa Morison','respectability'],
+    repository:'UCL Calendars (UCL Digital Collections)',
+    refSource:'[补填具体年份 Calendar]', creditLine:'[补填 Credit Line]',
+    evidenceNote:'插入：Women Students / No woman… introduction or reference… 截图（镇馆核心主图）',
+    exhibitionText:`passing-in rule 把"学习资格"改写为"体面/可信"的审查：女性必须提供 introduction/reference，并由 Tutor/Lady Superintendent 判定是否 satisfactory；男性不需要此类 character reference。规则语气平静，却有效地把性别不平等嵌进流程——边界从空间门槛转移到文书、介绍与判断。作为展品阅读，它让观众看到制度如何以"合规"之名生产差别，并把女性构造成需要被担保的主体。`,
+    tasks:[
+      {label:'Look',      text:'圈出三组权力词：No woman / introduction or reference / satisfactory。'},
+      {label:'Interpret', text:'这更像"保护"还是"筛选"？写一句理由。'},
+      {label:'Respond',   text:'如果你是当时的女学生，你要向谁寻求担保？这说明了什么样的社会网络？'},
+    ],
+    altText:'UCL Calendars 中关于女性入学的 passing-in rule 条款截图，文字强调女性需 introduction/reference 且由 Tutor/Lady Superintendent 认可，用于呈现制度门禁与性别化治理。',
+  },
+  {
+    id:5, category:'Exiting / Resisting', date:'1917–1961', highlight:false, nextId:6,
+    title:'1918 | Equal Pay as Public Pedagogy',
+    subtitle:'NUWT 如何把教师劳动变成公共教育',
+    tags:['NUWT','LCC','equal pay','public pedagogy'],
+    repository:'IOE Archives (UCL Institute of Education)',
+    refSource:'UWT/D/21/12', creditLine:'[补填 Credit Line / Restrictions]',
+    evidenceNote:'图A：示威/明信片（标语清晰的那张）｜图B：LCC and equal pay / Salaries of teachers 标题页（1–2张）',
+    exhibitionText:`当教育史被写成"女性如何进入大学"的故事时，女性常被放在学生位置；而 NUWT 材料提醒我们：教育同样发生在劳动、薪酬与政策争取中。示威影像与媒体文本把课堂搬到街头——"谁在教书、教书值多少、为何不平等"成为公共讨论。本展项把同工同酬理解为一种公共教育实践：它教育公众如何理解公平、价值与专业尊严，并让教师劳动从"看不见的支撑"变成可被讨论的公共议题。`,
+    tasks:[
+      {label:'Look',      text:'从标语/标题中找出一个关键词（equal pay / salaries / grant 等），写下来。'},
+      {label:'Interpret', text:'这场行动主要在争取什么？A 薪资公平 / B 专业尊严 / C 公共教育质量（选一个并解释）。'},
+      {label:'Respond',   text:'如果你是当时的公众，你会被哪一句话说服？为什么？'},
+    ],
+    altText:'NUWT 示威/明信片图像及 LCC/NUWT 相关文件封面或剪报标题页，用于呈现教师如何在公共空间提出平等主张。',
+  },
+  {
+    id:6, category:'Epilogue', date:'1980–81', highlight:false, nextId:null,
+    title:"1980–81 | Slade Women's Group",
+    subtitle:'自组织如何生产学习与安全的基础设施',
+    tags:["Slade","women's group","participation"],
+    repository:'UCL Special Collections (Slade Archive)',
+    refSource:'UCLCA/4/1/8/3', creditLine:'[补填 Credit Line / Restrictions]',
+    evidenceNote:'图A：Slade Women\'s Group 通知/材料页（信息密度高的一张）｜图B：活动/合影或背标信息（如有）',
+    exhibitionText:`作为尾声，Slade Women's Group 让"边界"从19世纪的制度门禁延伸到学习环境中的安全、资源与集体行动：当规则不再以明文写出时，边界常以氛围、风险与可见性出现。自组织在这里不仅是政治行动，也是一种学习基础设施——它生产信息、互助与空间使用规则，使"学习"成为可持续的共同实践。将此材料放入展览，是为了提示观众：边界从未消失，只是不断被重新命名与协商。`,
+    tasks:[
+      {label:'Look',    text:'从通知/材料中找出 1 个动词（meet / organise / support / discuss 等），写出它指向的行动。'},
+      {label:'Respond', text:'在你看来，学习空间的"安全"属于谁的责任——机构、社群还是个体？'},
+    ],
+    altText:"Slade Women's Group 1980–81 的通知/材料图片，用于呈现女性在艺术教育空间中的自组织如何生产学习资源与安全议题。",
+  },
+];
+
+const TIMELINE_DATA = [
+  { year:'1869',      en:"Ladies' Lectures",             zh:'女士讲座开始',                           chapter:'Chapter 1', cat:'Entering' },
+  { year:'1871',      en:'Mixed Classes',                zh:'混合课堂出现',                           chapter:'Chapter 1', cat:'Entering' },
+  { year:'1878',      en:'Degree Access for Women',      zh:'女性成为正式学位学生',                   chapter:'Chapter 1→2', cat:'Entering' },
+  { year:'1883',      en:'Passing-in Rule begins',       zh:'女性需 introduction/reference；男性不需要', chapter:'Chapter 2', cat:'Passing In' },
+  { year:'1883–1912', en:'Rosa Morison: Lady Supt.',     zh:'推动女性 Reading Room 与社群组织',        chapter:'Chapter 2', cat:'Passing In' },
+  { year:'1917',      en:'Women admitted to Medicine',   zh:'女性获准学习医学',                       chapter:'Chapter 2', cat:'Passing In' },
+  { year:'1918',      en:'NUWT Demonstration',           zh:'NUWT 行动影像（示威/明信片/剪报）',       chapter:'Chapter 3', cat:'Exiting / Resisting' },
+  { year:'1919',      en:'Passing-in Rule abolished',    zh:'Passing-in rule 正式废除',               chapter:'Chapter 3', cat:'Exiting / Resisting' },
+  { year:'1980–81',   en:"Slade Women's Group",          zh:'自组织材料（尾声）',                     chapter:'Epilogue',  cat:'Epilogue' },
+];
+
+const CHAPTERS_DATA = [
+  { num:1, label:'Chapter 1', title:'Entering',           period:'1869–1878', zh:'进入的边界', postIds:[1,2,3], cat:'Entering',
+    desc:'从"女士讲座"到混合课堂与学位资格开放：进入并不自动意味着平等。' },
+  { num:2, label:'Chapter 2', title:'Passing In',         period:'1883–1919', zh:'门禁的边界', postIds:[3,4],   cat:'Passing In',
+    desc:'以 passing-in rule 为核心展品，讨论 introduction/reference 与 Lady Superintendent 如何把"体面"制度化为门槛。' },
+  { num:3, label:'Chapter 3', title:'Exiting / Resisting',period:'1918–',     zh:'公共与代表性的边界', postIds:[5], cat:'Exiting / Resisting',
+    desc:'NUWT 档案影像与 LCC 议题材料，把教师劳动与平等诉求变成公共教育实践。' },
+  { num:4, label:'Epilogue',  title:'Afterlives',         period:'1980–81',   zh:'尾声/自组织', postIds:[6],   cat:'Epilogue',
+    desc:'Slade Women\'s Group 作为尾声：边界并未消失，而被重新命名、被集体行动对抗。' },
+];
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+
+function CatBadge({ cat }) {
+  const s = CATS[cat] || {};
+  return _react2.default.createElement('span', { className: `inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border ${s.bg} ${s.text} ${s.border}`,}, cat);
+}
+
+function ImgSlot({ note, alt }) {
+  return (
+    _react2.default.createElement('div', { className: "my-6 border-2 border-dashed border-stone-300 rounded-xl bg-stone-50 flex flex-col items-center justify-center gap-3 py-12 px-6"            ,}
+      , _react2.default.createElement(_lucidereact.Image, { size: 36, className: "text-stone-300", strokeWidth: 1,} )
+      , _react2.default.createElement('p', { className: "text-sm text-stone-500 italic text-center max-w-sm"    ,}, note)
+      , _react2.default.createElement('p', { className: "text-xs text-stone-400 text-center max-w-sm"   ,}, "Alt: " , alt)
+    )
+  );
+}
+
+function TaskBox({ tasks }) {
+  return (
+    _react2.default.createElement('div', { className: "mt-6 bg-amber-50 border border-amber-200 rounded-xl p-5"     ,}
+      , _react2.default.createElement('p', { className: "text-xs font-semibold uppercase tracking-widest text-amber-700 mb-4"     ,}, "观众任务 Audience Task"  )
+      , _react2.default.createElement('div', { className: "space-y-4",}
+        , tasks.map((t, i) => (
+          _react2.default.createElement('div', { key: i, className: "flex gap-3 items-start"  ,}
+            , _react2.default.createElement('span', { className: "flex-shrink-0 mt-0.5 w-6 h-6 rounded-full bg-amber-300 text-amber-900 text-xs font-bold flex items-center justify-center"           ,}, t.label.charAt(0))
+            , _react2.default.createElement('p', { className: "text-sm text-stone-700" ,}, _react2.default.createElement('span', { className: "font-semibold text-amber-800" ,}, t.label, ": " ), t.text)
+          )
+        ))
+      )
+    )
+  );
+}
+
+function ObjLabel({ post }) {
+  return (
+    _react2.default.createElement('div', { className: "bg-stone-100 border border-stone-200 rounded-xl p-4 mb-5 text-sm"      ,}
+      , _react2.default.createElement('p', { className: "text-xs font-semibold uppercase tracking-widest text-stone-400 mb-3"     ,}, "Object Label" )
+      , _react2.default.createElement('div', { className: "space-y-1 text-stone-700 font-mono text-xs"   ,}
+        , _react2.default.createElement('p', null, _react2.default.createElement('span', { className: "font-sans font-medium text-stone-500"  ,}, "Repository: " ), post.repository)
+        , _react2.default.createElement('p', null, _react2.default.createElement('span', { className: "font-sans font-medium text-stone-500"  ,}, "Ref/Source: " ), post.refSource)
+        , _react2.default.createElement('p', null, _react2.default.createElement('span', { className: "font-sans font-medium text-stone-500"  ,}, "Date: " ), post.date)
+        , _react2.default.createElement('p', null, _react2.default.createElement('span', { className: "font-sans font-medium text-stone-500"  ,}, "Credit line: "  ), post.creditLine)
+      )
+    )
+  );
+}
+
+function Wrap({ children, k }) {
+  return (
+    _react2.default.createElement(_framermotion.motion.div, { key: k,
+      initial: { opacity:0, y:14 }, animate: { opacity:1, y:0 },
+      exit: { opacity:0, y:-14 }, transition: { duration:0.28, ease:'easeInOut' },}
+      , children
+    )
+  );
+}
+
+// ─── PAGES ────────────────────────────────────────────────────────────────────
+
+function HomePage({ navigate, openPost }) {
+  return (
+    _react2.default.createElement(Wrap, { k: "home",}
+      /* Hero */
+      , _react2.default.createElement('div', { className: "bg-stone-900 text-stone-50 px-6 py-16"   ,}
+        , _react2.default.createElement('div', { className: "max-w-3xl mx-auto" ,}
+          , _react2.default.createElement('p', { className: "text-xs uppercase tracking-widest text-stone-400 mb-4"    ,}, "UCL 200 · Digital Exhibition"    )
+          , _react2.default.createElement('h1', { className: "text-4xl font-serif font-light leading-tight mb-2"    ,}, "Unseen Rules" )
+          , _react2.default.createElement('p', { className: "text-xl text-stone-300 font-light mb-1"   ,}, "Gender, Respectability and Access at UCL (1869–1919)"      )
+          , _react2.default.createElement('p', { className: "text-sm text-stone-400 mb-6"  ,}, "看不见的规则：UCL女性教育与\"体面\"治理（1869–1919）")
+          , _react2.default.createElement('p', { className: "text-stone-300 text-sm leading-relaxed max-w-2xl mb-8"    ,}, "这是一场以 UCL 200 为背景的数字展览，但它不把女性教育史讲成单线\"进步史\"。本展览关注：在\"开放与共学\"的叙事背后，教育制度如何通过看似中立的规则，划定谁可以进入、谁需要被审查、谁可能被排除。"
+
+          )
+          , _react2.default.createElement('div', { className: "flex flex-wrap gap-3"  ,}
+            , _react2.default.createElement('button', { onClick: () => navigate('chapters'), className: "inline-flex items-center gap-2 bg-stone-50 text-stone-900 px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-white transition-colors"           ,}, "按章节参观 "
+               , _react2.default.createElement(_lucidereact.ChevronRight, { size: 15,} )
+            )
+            , _react2.default.createElement('button', { onClick: () => navigate('objects'), className: "inline-flex items-center gap-2 bg-stone-700 text-stone-100 border border-stone-600 px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-stone-600 transition-colors"             ,}, "展项目录 "
+               , _react2.default.createElement(_lucidereact.LayoutGrid, { size: 15,} )
+            )
+          )
+        )
+      )
+
+      /* Framework */
+      , _react2.default.createElement('div', { className: "bg-white border-b border-stone-100 px-6 py-10"    ,}
+        , _react2.default.createElement('div', { className: "max-w-3xl mx-auto" ,}
+          , _react2.default.createElement('p', { className: "text-xs font-semibold uppercase tracking-widest text-stone-400 mb-5"     ,}, "展览框架 Exhibition Framework"  )
+          , _react2.default.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-4"   ,}
+            , [
+              { lab:'进入的边界 Entering',     cat:'Entering',           desc:'女士讲座、混合课堂与学位资格的开放，如何仍保留"例外性"。' },
+              { lab:'门禁的边界 Passing In',   cat:'Passing In',         desc:'1883–1919 的 passing-in rule 把"体面/可信"变成制度门槛。' },
+              { lab:'公共与代表 Resisting',    cat:'Exiting / Resisting',desc:'NUWT 把教育带到街头；Slade Women\'s Group 以自组织对抗边界。' },
+            ].map(f => { const s = CATS[f.cat]; return (
+              _react2.default.createElement('div', { key: f.lab, className: `p-4 rounded-xl border ${s.bg} ${s.border}`,}
+                , _react2.default.createElement('p', { className: `text-xs font-semibold mb-2 ${s.text}`,}, f.lab)
+                , _react2.default.createElement('p', { className: "text-sm text-stone-700" ,}, f.desc)
+              )
+            ); })
+          )
+        )
+      )
+
+      /* How to visit */
+      , _react2.default.createElement('div', { className: "px-6 py-10 bg-stone-50"  ,}
+        , _react2.default.createElement('div', { className: "max-w-3xl mx-auto" ,}
+          , _react2.default.createElement('p', { className: "text-xs font-semibold uppercase tracking-widest text-stone-400 mb-5"     ,}, "如何参观 How to Visit"   )
+          , _react2.default.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-4"   ,}
+            , _react2.default.createElement('div', { className: "bg-white rounded-xl border border-stone-200 p-5"    ,}
+              , _react2.default.createElement('p', { className: "font-medium text-stone-800 mb-2"  ,}, "按章节阅读")
+              , _react2.default.createElement('p', { className: "text-sm text-stone-500 mb-3"  ,}, "从 Chapter 1（Entering）顺序浏览至 Epilogue，跟随策展叙事逻辑。"   )
+              , _react2.default.createElement('button', { onClick: () => navigate('chapters'), className: "text-sm text-stone-700 font-medium inline-flex items-center gap-1 hover:text-stone-900 transition-colors"       ,}, "Chapters 展览路线 "
+                  , _react2.default.createElement(_lucidereact.ArrowRight, { size: 13,} )
+              )
+            )
+            , _react2.default.createElement('div', { className: "bg-white rounded-xl border border-stone-200 p-5"    ,}
+              , _react2.default.createElement('p', { className: "font-medium text-stone-800 mb-2"  ,}, "从展项目录跳读")
+              , _react2.default.createElement('p', { className: "text-sm text-stone-500 mb-3"  ,}, "每个展项页都包含观察任务，邀请你参与建构意义（constructivism）。")
+              , _react2.default.createElement('button', { onClick: () => navigate('objects'), className: "text-sm text-stone-700 font-medium inline-flex items-center gap-1 hover:text-stone-900 transition-colors"       ,}, "Objects 展项目录 "
+                  , _react2.default.createElement(_lucidereact.ArrowRight, { size: 13,} )
+              )
+            )
+          )
+        )
+      )
+
+      /* Preview grid */
+      , _react2.default.createElement('div', { className: "px-6 py-10 bg-white border-t border-stone-100"    ,}
+        , _react2.default.createElement('div', { className: "max-w-3xl mx-auto" ,}
+          , _react2.default.createElement('p', { className: "text-xs font-semibold uppercase tracking-widest text-stone-400 mb-5"     ,}, "展项预览 Objects Preview"  )
+          , _react2.default.createElement('div', { className: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"    ,}
+            , POSTS.map(p => { const s = CATS[p.category]; return (
+              _react2.default.createElement('button', { key: p.id, onClick: () => openPost(p),
+                className: `text-left rounded-xl border border-stone-200 border-l-4 ${s.accent} bg-stone-50 p-4 hover:shadow-md transition-all group`,}
+                , _react2.default.createElement(CatBadge, { cat: p.category,} )
+                , _react2.default.createElement('p', { className: "mt-2 text-sm font-semibold text-stone-800 leading-snug"    ,}, p.title)
+                , _react2.default.createElement('p', { className: "text-xs text-stone-500 mt-0.5"  ,}, p.subtitle)
+                , _react2.default.createElement('p', { className: "text-xs text-stone-400 mt-2 flex items-center gap-1"     ,}, p.date, " " , _react2.default.createElement(_lucidereact.ChevronRight, { size: 11, className: "group-hover:translate-x-0.5 transition-transform" ,} ))
+              )
+            ); })
+          )
+        )
+      )
+    )
+  );
+}
+
+function ChaptersPage({ openPost }) {
+  return (
+    _react2.default.createElement(Wrap, { k: "chapters",}
+      , _react2.default.createElement('div', { className: "px-6 py-12 max-w-3xl mx-auto"   ,}
+        , _react2.default.createElement('h1', { className: "text-2xl font-serif font-light text-stone-900 mb-1"    ,}, "展览路线 Chapters" )
+        , _react2.default.createElement('p', { className: "text-sm text-stone-400 mb-8"  ,}, "本展览分为三章与尾声，每章包含若干展项（Objects/Posts）。")
+        , _react2.default.createElement('div', { className: "space-y-8",}
+          , CHAPTERS_DATA.map(ch => { const s = CATS[ch.cat]; const chPosts = POSTS.filter(p => ch.postIds.includes(p.id)); return (
+            _react2.default.createElement('div', { key: ch.num, className: "rounded-2xl border border-stone-200 overflow-hidden"   ,}
+              , _react2.default.createElement('div', { className: `${s.hbg} border-b ${s.border} px-6 py-5`,}
+                , _react2.default.createElement('div', { className: "flex items-start justify-between gap-4"   ,}
+                  , _react2.default.createElement('div', null
+                    , _react2.default.createElement('p', { className: `text-xs font-semibold uppercase tracking-widest ${s.text} mb-1`,}, ch.label, " · "  , ch.period)
+                    , _react2.default.createElement('h2', { className: "text-xl font-serif text-stone-900"  ,}, ch.title)
+                    , _react2.default.createElement('p', { className: "text-sm text-stone-500 mt-0.5"  ,}, ch.zh)
+                  )
+                  , _react2.default.createElement('span', { className: `text-3xl font-serif font-extralight ${s.text}`,}, ch.num < 4 ? `0${ch.num}` : '∞')
+                )
+                , _react2.default.createElement('p', { className: "text-sm text-stone-700 mt-3 leading-relaxed"   ,}, ch.desc)
+              )
+              , _react2.default.createElement('div', { className: "bg-white p-4" ,}
+                , _react2.default.createElement('p', { className: "text-xs text-stone-400 uppercase tracking-wider mb-3"    ,}, "展项 Objects" )
+                , _react2.default.createElement('div', { className: "space-y-2",}
+                  , chPosts.map(p => (
+                    _react2.default.createElement('button', { key: p.id, onClick: () => openPost(p),
+                      className: "w-full text-left flex items-center justify-between p-3 rounded-lg hover:bg-stone-50 border border-stone-100 transition-colors group"           ,}
+                      , _react2.default.createElement('div', null
+                        , _react2.default.createElement('p', { className: "text-sm font-medium text-stone-800"  ,}, p.title)
+                        , _react2.default.createElement('p', { className: "text-xs text-stone-500" ,}, p.subtitle)
+                      )
+                      , _react2.default.createElement(_lucidereact.ChevronRight, { size: 15, className: "text-stone-300 group-hover:text-stone-600 flex-shrink-0 transition-colors"   ,} )
+                    )
+                  ))
+                )
+              )
+            )
+          ); })
+        )
+      )
+    )
+  );
+}
+
+function TimelinePage() {
+  return (
+    _react2.default.createElement(Wrap, { k: "timeline",}
+      , _react2.default.createElement('div', { className: "px-6 py-12 max-w-3xl mx-auto"   ,}
+        , _react2.default.createElement('h1', { className: "text-2xl font-serif font-light text-stone-900 mb-1"    ,}, "时间线 Timeline" )
+        , _react2.default.createElement('p', { className: "text-sm text-stone-400 mb-10"  ,}, "展览涵盖的主要历史节点")
+        , _react2.default.createElement('div', { className: "relative",}
+          , _react2.default.createElement('div', { className: "absolute left-5 top-0 bottom-0 w-px bg-stone-200"     ,} )
+          , _react2.default.createElement('div', { className: "space-y-5",}
+            , TIMELINE_DATA.map((item, i) => { const s = CATS[item.cat]; return (
+              _react2.default.createElement(_framermotion.motion.div, { key: i, initial: { opacity:0, x:-16 }, animate: { opacity:1, x:0 }, transition: { delay: i * 0.06 },
+                className: "relative pl-14" ,}
+                , _react2.default.createElement('div', { className: `absolute left-3.5 top-2 w-3 h-3 rounded-full border-2 border-white ${s.dot} shadow`,} )
+                , _react2.default.createElement('div', { className: "bg-white border border-stone-200 rounded-xl p-4 hover:shadow-sm transition-shadow"      ,}
+                  , _react2.default.createElement('div', { className: "flex items-start justify-between gap-3 flex-wrap"    ,}
+                    , _react2.default.createElement('div', null
+                      , _react2.default.createElement('span', { className: `text-xl font-serif font-light ${s.text}`,}, item.year)
+                      , _react2.default.createElement('p', { className: "text-sm font-medium text-stone-800 mt-0.5"   ,}, item.en)
+                      , _react2.default.createElement('p', { className: "text-sm text-stone-500" ,}, item.zh)
+                    )
+                    , _react2.default.createElement('span', { className: `flex-shrink-0 text-xs px-2 py-0.5 rounded border ${s.bg} ${s.text} ${s.border}`,}, item.chapter)
+                  )
+                )
+              )
+            ); })
+          )
+        )
+      )
+    )
+  );
+}
+
+function ObjectsPage({ openPost }) {
+  const [filter, setFilter] = _react.useState.call(void 0, 'All');
+  const cats = ['All', ...Object.keys(CATS)];
+  const filtered = filter === 'All' ? POSTS : POSTS.filter(p => p.category === filter);
+  return (
+    _react2.default.createElement(Wrap, { k: "objects",}
+      , _react2.default.createElement('div', { className: "px-6 py-12 max-w-3xl mx-auto"   ,}
+        , _react2.default.createElement('h1', { className: "text-2xl font-serif font-light text-stone-900 mb-1"    ,}, "展项目录 Objects" )
+        , _react2.default.createElement('p', { className: "text-sm text-stone-400 mb-6"  ,}, "本展览以三类证据组织叙事：规则文本 · 行动材料 · 自组织材料。"    )
+        , _react2.default.createElement('div', { className: "flex flex-wrap gap-2 mb-8"   ,}
+          , cats.map(c => { const s = CATS[c] || {}; const on = filter === c; return (
+            _react2.default.createElement('button', { key: c, onClick: () => setFilter(c),
+              className: `text-xs px-3 py-1.5 rounded-full border transition-all ${on
+                ? c === 'All' ? 'bg-stone-900 text-white border-stone-900' : `${s.bg} ${s.text} ${s.border} font-semibold`
+                : 'bg-white text-stone-500 border-stone-200 hover:border-stone-400'}`,}
+              , c
+            )
+          ); })
+        )
+        , _react2.default.createElement('div', { className: "grid grid-cols-1 sm:grid-cols-2 gap-4"   ,}
+          , filtered.map(p => { const s = CATS[p.category]; return (
+            _react2.default.createElement('button', { key: p.id, onClick: () => openPost(p),
+              className: `text-left rounded-2xl border border-stone-200 border-l-4 ${s.accent} bg-white overflow-hidden hover:shadow-md transition-all group`,}
+              , _react2.default.createElement('div', { className: "h-28 bg-stone-100 border-b border-stone-200 flex items-center justify-center"      ,}
+                , _react2.default.createElement(_lucidereact.Image, { size: 28, className: "text-stone-300", strokeWidth: 1,} )
+              )
+              , _react2.default.createElement('div', { className: "p-4",}
+                , _react2.default.createElement('div', { className: "flex items-center gap-2 flex-wrap"   ,}
+                  , _react2.default.createElement(CatBadge, { cat: p.category,} )
+                  , p.highlight && _react2.default.createElement('span', { className: "text-xs bg-stone-900 text-white px-1.5 py-0.5 rounded"     ,}, "镇馆")
+                )
+                , _react2.default.createElement('p', { className: "mt-2 text-sm font-semibold text-stone-800 leading-snug"    ,}, p.title)
+                , _react2.default.createElement('p', { className: "text-xs text-stone-500 mt-0.5"  ,}, p.subtitle)
+                , _react2.default.createElement('div', { className: "flex flex-wrap gap-1 mt-3"   ,}
+                  , p.tags.map(t => _react2.default.createElement('span', { key: t, className: "text-xs text-stone-400 bg-stone-50 border border-stone-100 px-1.5 py-0.5 rounded"       ,}, t))
+                )
+                , _react2.default.createElement('div', { className: "mt-3 flex items-center justify-between"   ,}
+                  , _react2.default.createElement('span', { className: "text-xs text-stone-400" ,}, p.date)
+                  , _react2.default.createElement(_lucidereact.ChevronRight, { size: 14, className: "text-stone-300 group-hover:text-stone-600 transition-colors"  ,} )
+                )
+              )
+            )
+          ); })
+        )
+      )
+    )
+  );
+}
+
+function AboutPage() {
+  const secs = [
+    { title:'研究材料与来源 Research Materials', items:[
+        { h:'UCL Digital Collections', b:'Council Minutes / UCL Calendars（规则文本与制度节点）' },
+        { h:'UCL Special Collections', b:'Slade Archive（照片、团体与自组织材料）' },
+        { h:'IOE Archives',            b:'NUWT / LCC 相关材料（示威影像、议题文件、剪报等）' },
+        { h:'UCL Press',               b:'The World of UCL 与 Student London（补足制度语境与人物/职能变迁）' },
+    ]},
+    { title:'课程概念如何驱动策展决策 Curatorial Concepts', items:[
+        { h:'Constructivism',                      b:'每个展项页包含"观察任务—解释—回应"，观众通过阅读规则/图像来生成意义，而不是被动接收结论。' },
+        { h:'Participatory turn / New museology',  b:'以多入口导航与问题式阅读削弱单一权威叙事；NUWT 材料强调公共参与如何塑造教育意义。' },
+        { h:'Critical / artistic pedagogy',        b:'把规则文本当作"学习材料"，揭示不平等如何被制度语言自然化；尾声以 Slade Women\'s Group 展现行动与知识生产的关联。' },
+    ]},
+    { title:'伦理与无障碍 Ethics & Accessibility', items:[
+        { h:'版权', b:'遵循馆方复制与发布要求；所有图片标注 Repository / Ref No. / Date / Credit line。' },
+        { h:'Alt text', b:'为每张图提供 alt text；涉及敏感议题的页面增加 content note。' },
+    ]},
+  ];
+  return (
+    _react2.default.createElement(Wrap, { k: "about",}
+      , _react2.default.createElement('div', { className: "px-6 py-12 max-w-3xl mx-auto"   ,}
+        , _react2.default.createElement('h1', { className: "text-2xl font-serif font-light text-stone-900 mb-1"    ,}, "方法与说明 About" )
+        , _react2.default.createElement('p', { className: "text-sm text-stone-400 mb-8"  ,}, "策展方法、研究来源与伦理声明")
+        , _react2.default.createElement('div', { className: "space-y-6",}
+          , secs.map((sec, i) => (
+            _react2.default.createElement('div', { key: i, className: "bg-white border border-stone-200 rounded-2xl p-6"    ,}
+              , _react2.default.createElement('p', { className: "text-sm font-semibold text-stone-800 mb-4"   ,}, sec.title)
+              , _react2.default.createElement('div', { className: "space-y-3",}
+                , sec.items.map((item, j) => (
+                  _react2.default.createElement('div', { key: j, className: "flex gap-3 items-start"  ,}
+                    , _react2.default.createElement('div', { className: "flex-shrink-0 mt-2 w-1.5 h-1.5 rounded-full bg-stone-400"     ,} )
+                    , _react2.default.createElement('p', { className: "text-sm text-stone-600" ,}, _react2.default.createElement('span', { className: "font-medium text-stone-700" ,}, item.h, ": " ), item.b)
+                  )
+                ))
+              )
+            )
+          ))
+        )
+      )
+    )
+  );
+}
+
+function CreditsPage() {
+  return (
+    _react2.default.createElement(Wrap, { k: "credits",}
+      , _react2.default.createElement('div', { className: "px-6 py-12 max-w-3xl mx-auto"   ,}
+        , _react2.default.createElement('h1', { className: "text-2xl font-serif font-light text-stone-900 mb-1"    ,}, "版权与致谢 Credits" )
+        , _react2.default.createElement('p', { className: "text-sm text-stone-400 mb-8"  ,}, "图像来源、版权声明与致谢")
+        , _react2.default.createElement('div', { className: "space-y-5",}
+          , _react2.default.createElement('div', { className: "bg-white border border-stone-200 rounded-2xl p-6"    ,}
+            , _react2.default.createElement('p', { className: "text-sm font-semibold text-stone-700 mb-3"   ,}, "图像来源 Image Sources"  )
+            , _react2.default.createElement('p', { className: "text-sm text-stone-600 leading-relaxed"  ,}, "本展览图像来自 UCL Digital Collections、UCL Special Collections（Slade Archive）与 IOE Archives（NUWT/LCC 材料），并在各展项页的 Object Label 中标注 Repository / Ref No. / Date / Credit line。二手史料与背景信息来自 UCL Press 出版物（The World of UCL、Student London）。"                            )
+          )
+          , _react2.default.createElement('div', { className: "bg-white border border-stone-200 rounded-2xl p-6"    ,}
+            , _react2.default.createElement('p', { className: "text-sm font-semibold text-stone-700 mb-4"   ,}, "展项图像汇总 Credit Lines per Object"    )
+            , _react2.default.createElement('div', { className: "space-y-3",}
+              , POSTS.map(p => (
+                _react2.default.createElement('div', { key: p.id, className: "pb-3 border-b border-stone-100 last:border-0 last:pb-0"    ,}
+                  , _react2.default.createElement('p', { className: "text-xs font-semibold text-stone-700"  ,}, p.title)
+                  , _react2.default.createElement('p', { className: "text-xs text-stone-500 mt-0.5"  ,}, "Repository: " , p.repository)
+                  , _react2.default.createElement('p', { className: "text-xs text-stone-400" ,}, "Ref: " , p.refSource, " · Credit: "   , p.creditLine)
+                )
+              ))
+            )
+            , _react2.default.createElement('p', { className: "text-xs text-stone-400 mt-4 italic"   ,}, "上线前，把每张实际使用的图片对应的 credit line 汇总到此处。"   )
+          )
+          , _react2.default.createElement('div', { className: "bg-white border border-stone-200 rounded-2xl p-6"    ,}
+            , _react2.default.createElement('p', { className: "text-sm font-semibold text-stone-700 mb-2"   ,}, "技术制作 Technical" )
+            , _react2.default.createElement('p', { className: "text-sm text-stone-600" ,}, "本展览为数字展览模版，基于 WordPress 架构设计。请在发布前补全所有 [补填] 字段，并确认馆方复制与发布许可。"    )
+          )
+        )
+      )
+    )
+  );
+}
+
+function PostDetailPage({ post, navigate, openPost }) {
+  if (!post) return null;
+  const s = CATS[post.category] || {};
+  const nextPost = post.nextId ? POSTS.find(p => p.id === post.nextId) : null;
+  return (
+    _react2.default.createElement(Wrap, { k: `post-${post.id}`,}
+      , _react2.default.createElement('div', { className: "max-w-2xl mx-auto px-6 py-8"   ,}
+        /* Breadcrumb */
+        , _react2.default.createElement('div', { className: "flex items-center gap-2 text-xs text-stone-400 mb-6"     ,}
+          , _react2.default.createElement('button', { onClick: () => navigate('objects'), className: "hover:text-stone-700 transition-colors" ,}, "Objects")
+          , _react2.default.createElement(_lucidereact.ChevronRight, { size: 11,} )
+          , _react2.default.createElement(CatBadge, { cat: post.category,} )
+          , post.highlight && _react2.default.createElement('span', { className: "text-xs bg-stone-900 text-white px-1.5 py-0.5 rounded ml-1"      ,}, "镇馆展项")
+        )
+
+        /* Title block */
+        , _react2.default.createElement('div', { className: `${s.hbg} border-l-4 ${s.accent} pl-5 py-4 mb-6 rounded-r-xl`,}
+          , _react2.default.createElement('h1', { className: "text-xl font-serif text-stone-900"  ,}, post.title)
+          , _react2.default.createElement('p', { className: "text-sm text-stone-500 mt-1"  ,}, post.subtitle)
+          , _react2.default.createElement('div', { className: "flex flex-wrap gap-1.5 mt-2"   ,}
+            , post.tags.map(t => _react2.default.createElement('span', { key: t, className: "text-xs text-stone-400 bg-white border border-stone-200 px-1.5 py-0.5 rounded"       ,}, t))
+          )
+        )
+
+        /* Object Label */
+        , _react2.default.createElement(ObjLabel, { post: post,} )
+
+        /* Evidence slot */
+        , _react2.default.createElement(ImgSlot, { note: post.evidenceNote, alt: post.altText,} )
+
+        /* Exhibition text */
+        , _react2.default.createElement('div', { className: "mb-2",}
+          , _react2.default.createElement('p', { className: "text-xs font-semibold uppercase tracking-widest text-stone-400 mb-3"     ,}, "展签 Exhibition Text"  )
+          , _react2.default.createElement('div', { className: "bg-white border border-stone-200 rounded-xl p-5 text-stone-700 text-sm leading-relaxed"       ,}
+            , post.exhibitionText
+          )
+        )
+
+        /* Task box */
+        , _react2.default.createElement(TaskBox, { tasks: post.tasks,} )
+
+        /* Alt text reference */
+        , _react2.default.createElement('div', { className: "mt-4 p-3 bg-stone-50 border border-stone-100 rounded-lg"     ,}
+          , _react2.default.createElement('p', { className: "text-xs text-stone-400" ,}, _react2.default.createElement('span', { className: "font-medium text-stone-500" ,}, "Alt text: "  ), post.altText)
+        )
+
+        /* Navigation */
+        , _react2.default.createElement('div', { className: "mt-8 pt-6 border-t border-stone-200 flex items-center justify-between gap-4"       ,}
+          , _react2.default.createElement('button', { onClick: () => navigate('objects'), className: "text-sm text-stone-400 hover:text-stone-700 transition-colors flex items-center gap-1"      ,}, "← 返回目录"
+
+          )
+          , nextPost ? (
+            _react2.default.createElement('button', { onClick: () => openPost(nextPost),
+              className: "inline-flex items-center gap-2 bg-stone-900 text-white px-4 py-2 rounded-lg text-sm hover:bg-stone-700 transition-colors"          ,}, "下一站 "
+               , _react2.default.createElement(_lucidereact.ChevronRight, { size: 14,} )
+            )
+          ) : (
+            _react2.default.createElement('button', { onClick: () => navigate('home'),
+              className: "inline-flex items-center gap-2 bg-stone-900 text-white px-4 py-2 rounded-lg text-sm hover:bg-stone-700 transition-colors"          ,}, "返回首页 "
+               , _react2.default.createElement(_lucidereact.Home, { size: 14,} )
+            )
+          )
+        )
+      )
+    )
+  );
+}
+
+// ─── MAIN ─────────────────────────────────────────────────────────────────────
+
+ function Exhibition() {
+  const [page, setPage] = _react.useState.call(void 0, 'home');
+  const [post, setPost] = _react.useState.call(void 0, null);
+  const [mob, setMob] = _react.useState.call(void 0, false);
+
+  const navigate = (p) => { setPage(p); setMob(false); if (p !== 'post-detail') setPost(null); };
+  const openPost = (p) => { setPost(p); setPage('post-detail'); setMob(false); };
+
+  return (
+    _react2.default.createElement('div', { className: "min-h-screen bg-stone-50" ,}
+      /* ── NAV ── */
+      , _react2.default.createElement('header', { className: "sticky top-0 z-50 bg-white border-b border-stone-200 shadow-sm"      ,}
+        , _react2.default.createElement('div', { className: "max-w-5xl mx-auto px-4 flex items-center justify-between h-14"      ,}
+          , _react2.default.createElement('button', { onClick: () => navigate('home'), className: "flex items-center gap-2"  ,}
+            , _react2.default.createElement('span', { className: "text-sm font-serif font-semibold text-stone-800"   ,}, "Unseen Rules" )
+            , _react2.default.createElement('span', { className: "hidden sm:block text-xs text-stone-400 font-sans"    ,}, "UCL 1869–1919" )
+          )
+          , _react2.default.createElement('nav', { className: "hidden md:flex items-center gap-1"   ,}
+            , NAV_ITEMS.map(n => (
+              _react2.default.createElement('button', { key: n.id, onClick: () => navigate(n.id),
+                className: `px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                  page === n.id || (page === 'post-detail' && n.id === 'objects')
+                    ? 'bg-stone-900 text-white' : 'text-stone-600 hover:bg-stone-100'}`,}
+                , n.label
+              )
+            ))
+          )
+          , _react2.default.createElement('button', { className: "md:hidden p-2 rounded-md hover:bg-stone-100 transition-colors"    , onClick: () => setMob(o => !o),}
+            , mob ? _react2.default.createElement(_lucidereact.X, { size: 20,} ) : _react2.default.createElement(_lucidereact.Menu, { size: 20,} )
+          )
+        )
+        , mob && (
+          _react2.default.createElement('div', { className: "md:hidden border-t border-stone-100 bg-white"   ,}
+            , NAV_ITEMS.map(n => (
+              _react2.default.createElement('button', { key: n.id, onClick: () => navigate(n.id),
+                className: `w-full flex items-center gap-3 px-5 py-3 text-sm border-b border-stone-50 transition-colors ${page === n.id ? 'bg-stone-50 text-stone-900 font-medium' : 'text-stone-600'}`,}
+                , _react2.default.createElement(n.icon, { size: 15, className: "text-stone-400 flex-shrink-0" ,} )
+                , _react2.default.createElement('span', null, n.label)
+                , _react2.default.createElement('span', { className: "ml-auto text-xs text-stone-400"  ,}, n.labelZh)
+              )
+            ))
+          )
+        )
+      )
+
+      /* ── CONTENT ── */
+      , _react2.default.createElement('main', null
+        , _react2.default.createElement(_framermotion.AnimatePresence, { mode: "wait",}
+          , page === 'home'        && _react2.default.createElement(HomePage, {      key: "home",       navigate: navigate, openPost: openPost,} )
+          , page === 'chapters'    && _react2.default.createElement(ChaptersPage, {  key: "chapters",   openPost: openPost,} )
+          , page === 'timeline'    && _react2.default.createElement(TimelinePage, {  key: "timeline",}   )
+          , page === 'objects'     && _react2.default.createElement(ObjectsPage, {   key: "objects",    openPost: openPost,} )
+          , page === 'about'       && _react2.default.createElement(AboutPage, {     key: "about",}      )
+          , page === 'credits'     && _react2.default.createElement(CreditsPage, {   key: "credits",}    )
+          , page === 'post-detail' && _react2.default.createElement(PostDetailPage, { key: `p${_optionalChain([post, 'optionalAccess', _ => _.id])}`, post: post, navigate: navigate, openPost: openPost,} )
+        )
+      )
+
+      /* ── FOOTER ── */
+      , _react2.default.createElement('footer', { className: "mt-16 bg-stone-900 text-stone-400 px-6 py-10"    ,}
+        , _react2.default.createElement('div', { className: "max-w-3xl mx-auto" ,}
+          , _react2.default.createElement('div', { className: "flex flex-col md:flex-row justify-between gap-6"    ,}
+            , _react2.default.createElement('div', null
+              , _react2.default.createElement('p', { className: "text-white font-serif text-sm mb-1"   ,}, "Unseen Rules" )
+              , _react2.default.createElement('p', { className: "text-xs",}, "Gender, Respectability and Access at UCL (1869–1919)"      )
+              , _react2.default.createElement('p', { className: "text-xs mt-1" ,}, "看不见的规则：UCL女性教育与\"体面\"治理")
+            )
+            , _react2.default.createElement('div', { className: "text-xs space-y-1 max-w-xs"  ,}
+              , _react2.default.createElement('p', null, "Images: UCL Digital Collections · UCL Special Collections · IOE Archives"          )
+              , _react2.default.createElement('p', null, "Sources: UCL Press — The World of UCL · Student London"          )
+              , _react2.default.createElement('p', { className: "mt-2 text-stone-500 italic"  ,}, "上线前请补全所有 [补填] 字段并确认版权许可"  )
+            )
+          )
+          , _react2.default.createElement('div', { className: "mt-6 pt-6 border-t border-stone-800 flex flex-wrap gap-4"      ,}
+            , NAV_ITEMS.map(n => (
+              _react2.default.createElement('button', { key: n.id, onClick: () => navigate(n.id), className: "text-xs text-stone-500 hover:text-stone-300 transition-colors"   ,}
+                , n.label
+              )
+            ))
+          )
+        )
+      )
+    )
+  );
+} exports.default = Exhibition;
+</script></head>
+  <body>
+  
+
+<div id="preview-app"></div></body></html>
